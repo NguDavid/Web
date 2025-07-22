@@ -1,16 +1,15 @@
 #ifndef IMODULE_HPP
     #define IMODULE_HPP
 
+#include <unordered_map>
 #include <string>
-
-#include "HttpRequest.hpp"
 
 class IModule {
     public:
-        virtual ~IModule();
+        virtual ~IModule() = default;
 
-        virtual std::string handleRequest(const HttpRequest &request) = 0;
-        virtual bool canHandle(const HttpRequest &req) const = 0;
+        virtual std::string handleRequest(const std::unordered_map<std::string, std::string> &parsedData, const std::string &body) = 0;
+        virtual bool canHandle(const std::unordered_map<std::string, std::string> &parsedData) const = 0;
 };
 
 #endif /* IMODULE_HPP */

@@ -14,8 +14,8 @@ class HtmlModule : public IModule {
         HtmlModule& operator=(const HtmlModule &other);
         ~HtmlModule();
 
-        std::string handleRequest(const HttpRequest &request) override;
-        bool canHandle(const HttpRequest &req) const override;
+        std::string handleRequest(const std::unordered_map<std::string, std::string> &parsedData, const std::string &body) override;
+        bool canHandle(const std::unordered_map<std::string, std::string> &parsedData) const override;
 
     private:
         std::string readFile(const std::string &filepath) const;

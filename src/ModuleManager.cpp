@@ -6,7 +6,7 @@ ModuleManager::ModuleManager() = default;
 
 ModuleManager::~ModuleManager()
 {
-    int i = 0;
+    std::size_t i = 0;
 
     while (i < modules.size()) {
         delete (modules[i]);
@@ -26,6 +26,7 @@ ModuleManager& ModuleManager::operator=(const ModuleManager &other) = default;
 void ModuleManager::loadModules(const std::unordered_map<std::string, std::string> &config)
 {
     auto it = config.begin();
+    void *handle = nullptr;
 
     while (it != config.end()) {
         const std::string &key = it->first;
@@ -34,7 +35,7 @@ void ModuleManager::loadModules(const std::unordered_map<std::string, std::strin
             it++;
             continue;
         }
-        void *handle = dlopen(path.c_str(), RTLD_NOW);
+        handle = dlopen(path.c_str(), RTLD_NOW);
         if (!handle) {
             std::cout << "[ERROR] Failed to load module: " << path << " -> " << dlerror() << std::endl;
             it++;
@@ -67,11 +68,14 @@ const std::vector<IModule *> &ModuleManager::getModules() const
     return (modules);
 }
 
-IModule *ModuleManager::findModuleFor(const HttpRequest &req) const
+IModule *ModuleManager::findModuleFor(const std::unordered_map<std::string, std::string> &parsedData) const
 {
-    for (IModule *mod : modules) {
-        if (mod->canHandle(req))
-            return (mod);
+    auto it = modules.begin();
+
+    while (it != modules.end()) {
+        if ((*it)->canHandle(parsedData))
+            return (*it);
+        it++;
     }
     return (nullptr);
 }

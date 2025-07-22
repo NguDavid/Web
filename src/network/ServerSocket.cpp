@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cstdlib>
 
+#include "EpollMultiplexer.hpp"
 #include "ServerSocket.hpp"
 
 ServerSocket::ServerSocket()
@@ -21,7 +22,7 @@ bool ServerSocket::setServerSocket(const std::unordered_map<std::string, std::st
     } else {
         return (false);
     }
-    if (!listen(64))
+    if (!listen(MAX_EVENTS))
         return (false);
     std::cout << "[ServerSocket] Bound and listening on " << itPort->second << std::endl;
     return (true);
@@ -33,7 +34,6 @@ bool ServerSocket::bind(const std::string &port)
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(std::atoi(port.c_str()));
-
     return (::bind(fd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) != -1);
 }
 
@@ -45,13 +45,11 @@ bool ServerSocket::listen(int maxClients)
 ClientSocket *ServerSocket::acceptClient()
 {
     struct sockaddr_in clientAddr;
-    int clientFd = 0;
-
     socklen_t len = sizeof(clientAddr);
-    clientFd = accept(fd, (struct sockaddr *)&clientAddr, &len);
-    if (clientFd < 0) {
+    int clientFd = accept(fd, (struct sockaddr *)&clientAddr, &len);
+
+    if (clientFd < 0)
         return (nullptr);
-    }
     return (new ClientSocket(clientFd));
 }
 

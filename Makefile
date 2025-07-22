@@ -8,11 +8,13 @@
 SRC         =   src/parser/KeyValueParser.cpp  \
                 src/parser/IniParser.cpp  \
                 src/parser/HttpParser.cpp  \
-				src/network/Server.cpp  \
-				src/network/Socket.cpp  \
-				src/network/ServerSocket.cpp  \
-				src/network/ClientSocket.cpp  \
-				src/network/EpollMultiplexer.cpp  \
+                src/network/Server.cpp  \
+                src/network/Socket.cpp  \
+                src/network/ServerSocket.cpp  \
+                src/network/ClientSocket.cpp  \
+                src/network/EpollMultiplexer.cpp  \
+                src/ModuleManager.cpp  \
+                src/HtmlModule.cpp  \
                 src/main.cpp
 
 TEST_SRC	=   src/parser/KeyValueParser.cpp  \
@@ -75,4 +77,4 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re test_run
+.PHONY: all clean fclean re test_run modules

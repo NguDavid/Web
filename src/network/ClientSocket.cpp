@@ -7,7 +7,7 @@ ClientSocket::ClientSocket() {}
 
 int ClientSocket::receive(std::string &buffer)
 {
-    char temp[4096];
+    char temp[BUFFER_SIZE];
     int bytesRead = read(fd, temp, sizeof(temp));
 
     if (bytesRead > 0)

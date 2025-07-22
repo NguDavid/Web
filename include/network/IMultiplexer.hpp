@@ -1,6 +1,7 @@
 #ifndef IMULTIPLEXER_HPP
     #define IMULTIPLEXER_HPP
 
+#include "ModuleManager.hpp"
 #include "ClientSocket.hpp"
 #include "ServerSocket.hpp"
 
@@ -10,7 +11,8 @@ public:
 
     virtual void addSocket(ClientSocket *socket) = 0;
     virtual void removeSocket(ClientSocket *socket) = 0;
-    virtual void handleEvents(ServerSocket &serverSocket) = 0;
+    virtual void handleEvents(ServerSocket &serverSock, ModuleManager &moduleManager) = 0;
+    virtual void addServerSocket(ServerSocket &serverSock) = 0;
 };
 
 #endif /* IMULTIPLEXER_HPP */

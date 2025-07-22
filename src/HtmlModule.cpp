@@ -8,9 +8,13 @@ HtmlModule::HtmlModule(const HtmlModule &other) = default;
 
 HtmlModule& HtmlModule::operator=(const HtmlModule &other) = default;
 
-std::string HtmlModule::handleRequest(const HttpRequest& request)
+std::string HtmlModule::handleRequest(const std::unordered_map<std::string, std::string> &parsedData, const std::string &)
 {
-    std::string filepath = request.getPath();
+    auto it = parsedData.find("Path");
+
+    if (it == parsedData.end())
+        return ("Version: HTTP/1.1\nCode: 400\nMessage: Bad Request\nContent-Length: 0\n\n");
+    std::string filepath = it->second;
     return (readFile(filepath));
 }
 
@@ -21,7 +25,7 @@ std::string HtmlModule::readFile(const std::string& filepath) const
     std::string line;
 
     if (!file.is_open())
-        return ("version: HTTP/1.1\ncode: 404\nmessage: Not Found\nContent-Length: 0\n\n");
+        return ("Version: HTTP/1.1\nCode: 404\nMessage: Not Found\nContent-Length: 0\n\n");
     while (std::getline(file, line)) {
         content << line << "\n";
     }
@@ -36,13 +40,17 @@ std::string HtmlModule::readFile(const std::string& filepath) const
     return (response.str());
 }
 
-bool HtmlModule::canHandle(const HttpRequest &req) const
+bool HtmlModule::canHandle(const std::unordered_map<std::string, std::string> &parsedData) const
 {
-    return (req.getPath().size() >= 5 &&
-            req.getPath().substr(req.getPath().size() - 5) == ".html");
+    auto it = parsedData.find("Path");
+
+    if (it == parsedData.end())
+        return (false);
+    const std::string &path = it->second;
+    return (path.size() >= 5 && path.substr(path.size() - 5) == ".html");
 }
 
-extern "C" IModule* createModule()
+extern "C" IModule *createModule()
 {
     return (new HtmlModule());
 }

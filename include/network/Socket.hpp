@@ -4,6 +4,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+inline constexpr int BUFFER_SIZE = 4096;
+
 class Socket {
     public:
         Socket();

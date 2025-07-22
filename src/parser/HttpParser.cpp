@@ -4,11 +4,10 @@
 
 #include "HttpParser.hpp"
 
+#warning Ajouter les clefs obligatoires.
 HttpParser::HttpParser()
 {
     requiredKeys = {
-        "Content-Type",
-        "Content-Length"
     };
 }
 

@@ -16,6 +16,7 @@ class ModuleManager {
 
         void loadModules(const std::unordered_map<std::string, std::string> &config);
         const std::vector<IModule *> &getModules() const;
+        IModule *findModuleFor(const HttpRequest &req) const;
 
     private:
         std::vector<IModule *> modules;

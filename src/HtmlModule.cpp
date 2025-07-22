@@ -36,6 +36,12 @@ std::string HtmlModule::readFile(const std::string& filepath) const
     return (response.str());
 }
 
+bool HtmlModule::canHandle(const HttpRequest &req) const
+{
+    return (req.getPath().size() >= 5 &&
+            req.getPath().substr(req.getPath().size() - 5) == ".html");
+}
+
 extern "C" IModule* createModule()
 {
     return (new HtmlModule());

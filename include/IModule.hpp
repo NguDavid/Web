@@ -10,6 +10,7 @@ class IModule {
         virtual ~IModule();
 
         virtual std::string handleRequest(const HttpRequest &request) = 0;
+        virtual bool canHandle(const HttpRequest &req) const = 0;
 };
 
 #endif /* IMODULE_HPP */

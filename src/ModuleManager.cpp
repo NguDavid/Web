@@ -66,3 +66,12 @@ const std::vector<IModule *> &ModuleManager::getModules() const
 {
     return (modules);
 }
+
+IModule *ModuleManager::findModuleFor(const HttpRequest &req) const
+{
+    for (IModule *mod : modules) {
+        if (mod->canHandle(req))
+            return (mod);
+    }
+    return (nullptr);
+}

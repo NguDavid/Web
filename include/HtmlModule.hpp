@@ -15,6 +15,7 @@ class HtmlModule : public IModule {
         ~HtmlModule();
 
         std::string handleRequest(const HttpRequest &request) override;
+        bool canHandle(const HttpRequest &req) const override;
 
     private:
         std::string readFile(const std::string &filepath) const;
